@@ -1,0 +1,31 @@
+version: '3'
+services:
+  wss:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: wss_nodejs
+    container_name: wss-service
+    env_file: .env
+    network_mode: bridge
+    ports:
+      - "3500:3500"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    
+  postgres:
+    container_name: wss-database
+    image: postgres
+    env_file: .env
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5555:5432"
+
+volumes:
+  postgres:
+  pgadmin:
